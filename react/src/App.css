@@ -1,0 +1,28 @@
+/* App.css */
+
+/* Navigation Bar Styling */
+.nav {
+    padding: 10px;
+    background: #282c34;
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* Link Styling */
+  .link {
+    color: #61dafb;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  /* Content Area Styling */
+  .content {
+    padding: 20px;
+  }
+  
+  /* Optional: 404 Not Found Page Styling */
+  .not-found {
+    text-align: center;
+    padding: 50px;
+  }
+  
