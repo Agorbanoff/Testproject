@@ -1,49 +1,54 @@
 /* LoginPage.css */
 
-/* Reset some basic styles */
+/* CSS Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Hide scrollbar */
-/* body {
-  overflow: hidden;
-} */
-
+/* Hide horizontal scrollbar, allow vertical if needed */
+body {
+  overflow-x: hidden;
+  background-color: #121212; /* Dark background */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100vw;
+  height: 100vh;
+}
 
 /* Background for the entire page */
 .login-page {
-  height: 85vh;
+  display: flex;
+  justify-content: center;
+  height: 60vh;
   width: 90vw;
   margin-left: 5vw;
   margin-right: 5vw;
   margin-top: 5vh;
-  display: flex;
-  justify-content: center;
   background-color: #121212; /* Dark background */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Styling the login form container */
 .login-form {
-  /* margin-top: -30vh; */
   background-color: #1e1e1e; /* Slightly lighter dark */
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  padding: 3vw; /* Consistent with RegisterPage.css */
+  border-radius: 1vw;
+  box-shadow: 0 0.3vw 1vw rgba(0, 0, 0, 0.5);
   width: 100%;
-  max-width: 400px;
-  height: 60vh;
+  max-width: 35vw; /* Consistent with RegisterPage.css */
+  min-width: 280px; /* Ensures form doesn't get too small */
   color: #ffffff; /* White text */
+  display: flex;
+  flex-direction: column;
+  gap: 2vh; /* Space between elements */
+  overflow-y: auto; /* Allow vertical scroll if content overflows */
 }
 
 /* Form Heading */
 .login-form h2 {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 2em;
+  margin-bottom: 2vh;
+  font-size: 2.5vw; /* Responsive font size */
   color: #ffffff;
 }
 
@@ -51,40 +56,40 @@
 .error-message {
   background-color: #ff4c4c; /* Red background for errors */
   color: #ffffff;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 20px;
+  padding: 1.5vh 2vw;
+  border-radius: 0.5vw;
+  margin-bottom: 2vh;
   text-align: center;
   font-weight: bold;
+  font-size: 1.2vw;
 }
 
 /* Input group styling */
 .input-group {
-  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
+  gap: 1vh;
 }
 
 /* Labels */
 .input-group label {
-  margin-bottom: 8px;
-  font-size: 1em;
+  font-size: 1.2vw;
   color: #cccccc;
 }
 
 /* Input fields */
 .input-group input {
-  padding: 12px;
-  border: 1px solid #333333;
-  border-radius: 4px;
+  padding: 1.2vh 2vw;
+  border: 0.2vw solid #333333;
+  border-radius: 0.5vw;
   background-color: #2c2c2c;
   color: #ffffff;
-  font-size: 1em;
+  font-size: 1.2vw;
   transition: border 0.3s, background-color 0.3s;
 }
 
 .input-group input:focus {
-  border: 1px solid #6200ea; /* Accent color on focus */
+  border: 0.2vw solid #6200ea; /* Accent color on focus */
   outline: none;
   background-color: #3a3a3a;
 }
@@ -92,12 +97,12 @@
 /* Login button styling */
 .login-button {
   width: 100%;
-  padding: 12px;
+  padding: 1.5vh 2vw;
   background-color: #6200ea; /* Primary accent color */
   color: #ffffff;
   border: none;
-  border-radius: 4px;
-  font-size: 1em;
+  border-radius: 0.5vw;
+  font-size: 1.3vw;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -112,10 +117,9 @@
 
 /* Register link styling */
 .register-link {
-  margin-top: 15px;
   text-align: center;
   color: #cccccc;
-  font-size: 0.9em;
+  font-size: 1vw;
 }
 
 .register-link a {
@@ -129,18 +133,60 @@
   text-decoration: underline;
 }
 
-/* Responsive Design */
-@media (max-width: 480px) {
+/* Responsive Design for tablets */
+@media (max-width: 768px) {
   .login-form {
-    padding: 30px 20px;
+    max-width: 60vw;
+    padding: 4vw;
   }
 
   .login-form h2 {
-    font-size: 1.5em;
+    font-size: 3vw;
+  }
+
+  .error-message {
+    font-size: 1.5vw;
+  }
+
+  .input-group input {
+    font-size: 1.5vw;
   }
 
   .login-button {
-    padding: 10px;
-    font-size: 0.9em;
+    font-size: 1.5vw;
+    padding: 1.2vh 2.5vw;
+  }
+
+  .register-link {
+    font-size: 1.2vw;
+  }
+}
+
+/* Responsive Design for mobile devices */
+@media (max-width: 480px) {
+  .login-form {
+    max-width: 90vw;
+    padding: 5vw;
+  }
+
+  .login-form h2 {
+    font-size: 4vw;
+  }
+
+  .error-message {
+    font-size: 2vw;
+  }
+
+  .input-group input {
+    font-size: 2vw;
+  }
+
+  .login-button {
+    font-size: 2vw;
+    padding: 1vh 3vw;
+  }
+
+  .register-link {
+    font-size: 1.5vw;
   }
 }
