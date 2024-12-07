@@ -1,0 +1,205 @@
+/* RegisterPage.css */
+
+/* CSS Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Hide horizontal scrollbar, allow vertical if needed */
+body {
+  overflow-x: hidden;
+  background-color: #121212; /* Dark background */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Background for the entire page */
+.register-page {
+  height: 86.5vh;
+  width: 90vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-top: 5vh;
+  display: flex;
+  justify-content: center;
+  background-color: #121212; /* Dark background */
+}
+
+/* Styling the register form container */
+.register-form {
+  background-color: #1e1e1e; /* Slightly lighter dark */
+  padding: 3vw; /* Reduced padding */
+  border-radius: 1vw;
+  box-shadow: 0 0.3vw 1vw rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 35vw; /* Reduced max-width */
+  min-width: 280px; /* Ensures form doesn't get too small */
+  color: #ffffff; /* White text */
+  display: flex;
+  flex-direction: column;
+  gap: 2vh; /* Space between elements */
+  overflow-y: auto; /* Allow vertical scroll if content overflows */
+}
+
+/* Form Heading */
+.register-form h2 {
+  text-align: center;
+  margin-bottom: 2vh;
+  font-size: 2.5vw; /* Responsive font size */
+  color: #ffffff;
+}
+
+/* Error message styling */
+.error-message {
+  background-color: #ff4c4c; /* Red background for errors */
+  color: #ffffff;
+  padding: 1.5vh 2vw;
+  border-radius: 0.5vw;
+  margin-bottom: 2vh;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2vw;
+}
+
+/* Success message styling */
+.success-message {
+  background-color: #4caf50; /* Green background for success */
+  color: #ffffff;
+  padding: 1.5vh 2vw;
+  border-radius: 0.5vw;
+  margin-bottom: 2vh;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2vw;
+}
+
+/* Input group styling */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+}
+
+/* Labels */
+.input-group label {
+  font-size: 1.2vw;
+  color: #cccccc;
+}
+
+/* Input fields */
+.input-group input {
+  padding: 1.2vh 2vw;
+  border: 0.2vw solid #333333;
+  border-radius: 0.5vw;
+  background-color: #2c2c2c;
+  color: #ffffff;
+  font-size: 1.2vw;
+  transition: border 0.3s, background-color 0.3s;
+}
+
+.input-group input:focus {
+  border: 0.2vw solid #6200ea; /* Accent color on focus */
+  outline: none;
+  background-color: #3a3a3a;
+}
+
+/* Register button styling */
+.register-button {
+  width: 100%;
+  padding: 1.5vh 2vw;
+  background-color: #6200ea; /* Primary accent color */
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5vw;
+  font-size: 1.3vw;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.register-button:hover {
+  background-color: #7e35ff;
+}
+
+.register-button:active {
+  background-color: #5a00c8;
+}
+
+/* Login link styling */
+.login-link {
+  text-align: center;
+  color: #cccccc;
+  font-size: 1vw;
+}
+
+.login-link a {
+  color: #6200ea;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.login-link a:hover {
+  color: #7e35ff;
+  text-decoration: underline;
+}
+
+/* Responsive Design for tablets */
+@media (max-width: 768px) {
+  .register-form {
+      max-width: 60vw;
+      padding: 4vw;
+  }
+
+  .register-form h2 {
+      font-size: 3vw;
+  }
+
+  .error-message, .success-message {
+      font-size: 1.5vw;
+  }
+
+  .input-group input {
+      font-size: 1.5vw;
+  }
+
+  .register-button {
+      font-size: 1.5vw;
+      padding: 1.2vh 2.5vw;
+  }
+
+  .login-link {
+      font-size: 1.2vw;
+  }
+}
+
+/* Responsive Design for mobile devices */
+@media (max-width: 480px) {
+  .register-form {
+      max-width: 90vw;
+      padding: 5vw;
+  }
+
+  .register-form h2 {
+      font-size: 4vw;
+  }
+
+  .error-message, .success-message {
+      font-size: 2vw;
+  }
+
+  .input-group input {
+      font-size: 2vw;
+  }
+
+  .register-button {
+      font-size: 2vw;
+      padding: 1vh 3vw;
+  }
+
+  .login-link {
+      font-size: 1.5vw;
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Login from "./pages/Login.jsx";
- import Register from "./pages/Register.jsx";
+import Login from "./pages/LoginPage.jsx";
+ import Register from "./pages/RegisterPage.jsx";
 import './App.css'; // Import the CSS file
 
 const App = () => {
