@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// import "./RegisterPage.css";
+import "./RegisterPage.css";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
