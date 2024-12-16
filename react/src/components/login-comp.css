@@ -1,0 +1,223 @@
+/* Modal Overlay */
+.login-overlay {
+    position: fixed; /* Position fixed to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(18, 18, 18, 0.8); /* Semi-transparent dark background */
+    backdrop-filter: blur(5px); /* Blur effect on the background */
+    display: none; /* Hidden by default */
+    justify-content: center; /* Center the popup horizontally */
+    align-items: center; /* Center the popup vertically */
+    z-index: 1000; /* High z-index to appear above all other content */
+  }
+  
+  /* Display the overlay when active */
+  .login-overlay.active {
+    display: flex;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Fade-in animation for the overlay */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Login Popup Container */
+  .login-popup {
+    background-color: #1e1e1e; /* Match the login-form background */
+    padding: 3vw;
+    border-radius: 1vw;
+    box-shadow: 0 0.3vw 1vw rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px; /* Fixed max-width for consistency */
+    min-width: 280px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    position: relative; /* For positioning the close button */
+    animation: slideDown 0.3s ease-in-out;
+  }
+  
+  /* Slide-down animation for the popup */
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Close Button */
+  .login-popup::before {
+    content: '×';
+    position: absolute;
+    top: 1vw;
+    right: 1vw;
+    font-size: 2vw;
+    color: #ffffff;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .login-popup::before:hover {
+    color: #ff4c4c;
+  }
+  
+  /* Existing Login Form Styles */
+  .login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    overflow-y: auto;
+  }
+  
+  .login-form h2 {
+    text-align: center;
+    margin-bottom: 2vh;
+    font-size: 2.5vw;
+    color: #ffffff;
+  }
+  
+  .error-message {
+    background-color: #ff4c4c;
+    color: #ffffff;
+    padding: 1.5vh 2vw;
+    border-radius: 0.5vw;
+    margin-bottom: 2vh;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2vw;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+  }
+  
+  .input-group label {
+    font-size: 1.2vw;
+    color: #cccccc;
+  }
+  
+  .input-group input {
+    padding: 1.2vh 2vw;
+    border: 0.2vw solid #333333;
+    border-radius: 0.5vw;
+    background-color: #2c2c2c;
+    color: #ffffff;
+    font-size: 1.2vw;
+    transition: border 0.3s, background-color 0.3s;
+  }
+  
+  .input-group input:focus {
+    border: 0.2vw solid #6200ea;
+    outline: none;
+    background-color: #3a3a3a;
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 1.5vh 2vw;
+    background-color: #6200ea;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.5vw;
+    font-size: 1.3vw;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-button:hover {
+    background-color: #7e35ff;
+  }
+  
+  .login-button:active {
+    background-color: #5a00c8;
+  }
+  
+  .register-link {
+    text-align: center;
+    color: #cccccc;
+    font-size: 1vw;
+  }
+  
+  .register-link a {
+    color: #6200ea;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .register-link a:hover {
+    color: #7e35ff;
+    text-decoration: underline;
+  }
+  
+  /* Responsive Design for tablets */
+  @media (max-width: 768px) {
+    .login-popup {
+      padding: 4vw;
+    }
+  
+    .login-form h2 {
+      font-size: 3vw;
+    }
+  
+    .error-message {
+      font-size: 1.5vw;
+    }
+  
+    .input-group input {
+      font-size: 1.5vw;
+    }
+  
+    .login-button {
+      font-size: 1.5vw;
+      padding: 1.2vh 2.5vw;
+    }
+  
+    .register-link {
+      font-size: 1.2vw;
+    }
+  }
+  
+  /* Responsive Design for mobile devices */
+  @media (max-width: 480px) {
+    .login-popup {
+      padding: 5vw;
+    }
+  
+    .login-form h2 {
+      font-size: 4vw;
+    }
+  
+    .error-message {
+      font-size: 2vw;
+    }
+  
+    .input-group input {
+      font-size: 2vw;
+    }
+  
+    .login-button {
+      font-size: 2vw;
+      padding: 1vh 3vw;
+    }
+  
+    .register-link {
+      font-size: 1.5vw;
+    }
+  }
+  

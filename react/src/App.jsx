@@ -31,7 +31,7 @@ const NotFound = () => {
   return (
     <div className="not-found">
       <h2>404 - Page Not Found</h2>
-      <p>Sorry, the page youre looking for doesnt exist.</p>
+      <p>Sorry, the page you&#39;re looking for doesn&#39;t exist.</p>
     </div>
   );
 };
