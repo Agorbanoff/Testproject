@@ -91,7 +91,7 @@ const LoginComp = ({ isOpen, onClose }) => {
             Login
           </button>
           <p className="register-link">
-            Don't have an account? <Link to="/register">Register here</Link>
+            Don&#39;t have an account? <Link to="/register">Register here</Link>
           </p>
         </form>
       </div>
