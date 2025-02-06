@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "test_table")
+@Table(name = "user_table")
 @Data
-public class RedditEntity {
+public class UserProfileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
@@ -17,5 +17,7 @@ public class RedditEntity {
 
     @Column(unique = true, nullable = false)
     private String password;
+
+
 
 }
