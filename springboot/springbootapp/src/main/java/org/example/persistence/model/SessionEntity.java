@@ -12,11 +12,16 @@ public class SessionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private long id;
+    private long sessionId;
 
     @Column(unique = true, nullable = false)
-    private String username;
+    private String sessionString;
 
-    @Column(unique = false, nullable = false)
-    private String password;
+    @Column(nullable = false)
+    private boolean isExpired;
+
+    public SessionEntity(String sessionString) {
+        this.sessionString = sessionString;
+        this.isExpired = false;
+    }
 }

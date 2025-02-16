@@ -10,14 +10,17 @@ public class UserProfileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private int id;
+    private long profileId;
 
-    @Column(unique = true, nullable = false)
+    @Column
     private String username;
 
-    @Column(unique = true, nullable = false)
+    @Column
     private String password;
 
+    @Column
+    private String pfpPath;
 
-
+    @Column
+    private String description;
 }
