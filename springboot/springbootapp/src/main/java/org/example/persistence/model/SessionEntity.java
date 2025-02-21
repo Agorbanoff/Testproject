@@ -15,8 +15,13 @@ public class SessionEntity {
     private long id;
 
     @Column(unique = true, nullable = false)
-    private String username;
+    private String sessionString;
 
-    @Column(unique = false, nullable = false)
-    private String password;
+    @Column(nullable = false)
+    private boolean isExpired;
+
+    public SessionEntity(String sessionString) {
+        this.sessionString = sessionString;
+        this.isExpired = false;
+    }
 }
