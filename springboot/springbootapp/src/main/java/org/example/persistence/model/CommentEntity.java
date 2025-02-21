@@ -11,18 +11,22 @@ public class CommentEntity {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long commentId;
+    private long id;
 
     @OneToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
+    @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     private UserAccountEntity creator;
 
+    @ManyToOne
+    @JoinColumn(name = "postId", referencedColumnName = "id", nullable = false)
+    private PostEntity post;
+
     @OneToOne
-    @JoinColumn(name = "commentId", referencedColumnName = "commentId", nullable = true)
-    private CommentEntity superComment;
+    @JoinColumn(name = "commentId", referencedColumnName = "id", nullable = true)
+    private CommentEntity upperComment;
+
     @Column
     private String text;
-    //ne sum reshil oshte kak da sa organizirani putishtata na file-ovet
-    @Column
-    private List<String> filePaths;
+    //ne sum reshil oshte kak da sa organizirani putishtata na file-ovetе
+
 }

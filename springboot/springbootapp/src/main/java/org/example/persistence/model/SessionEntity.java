@@ -12,7 +12,7 @@ public class SessionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private long sessionId;
+    private long id;
 
     @Column(unique = true, nullable = false)
     private String sessionString;

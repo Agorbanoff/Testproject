@@ -17,5 +17,6 @@ public class SubredditEntity {
     @JoinColumn
     private List<UserAccountEntity> users;
 
-    private String posts;
+    @OneToMany(mappedBy = "subreddit")
+    private List<PostEntity> posts;
 }

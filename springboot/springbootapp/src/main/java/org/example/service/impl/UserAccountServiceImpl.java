@@ -12,6 +12,7 @@ import org.example.persistence.repository.UserAccountRepository;
 import org.example.persistence.repository.UserProfileRepository;
 import org.example.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
+@Service
 public class UserAccountServiceImpl implements UserAccountService {
 
     private static String PFP_DIR_PATH = "~/TestProject/UserData/Pfp";
@@ -80,12 +82,12 @@ public class UserAccountServiceImpl implements UserAccountService {
     private long getUserProfileIdBySessionString(String sessionString) {
         UserAccountEntity userAccountEntity = userAccountRepository.findBySession_SessionString(sessionString);
         UserProfileEntity userProfileEntity = userAccountEntity.getProfile();
-        return userProfileEntity.getProfileId();
+        return userProfileEntity.getId();
     }
     private String saveMultipartFile(MultipartFile file) throws IOException {
         Path fileDir = Path.of(PFP_DIR_PATH);
         Files.createDirectories(fileDir);
-        Path filePath = fileDir.resolve(file.getOriginalFilename());
+        Path filePath = fileDir.resolve(file.getOriginalFilename() + String.valueOf(System.currentTimeMillis()));
         Files.copy(file.getInputStream(), filePath);
         return filePath.toString();
     }

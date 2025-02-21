@@ -12,11 +12,18 @@ public class PostEntity {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long postId;
+    private long id;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "userAccountId", referencedColumnName = "id")
     private UserAccountEntity creator;
-    
+
+    @Column
+    private String title;
+
+    @Column
+    private String text;
+
+    @OneToMany(mappedBy = "post")
     private List<CommentEntity> comments;
 }

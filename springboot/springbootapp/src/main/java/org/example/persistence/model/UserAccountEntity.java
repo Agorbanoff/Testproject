@@ -11,13 +11,13 @@ public class UserAccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private Long userId;
+    private Long id;
 
     @OneToOne
-    @JoinColumn(name = "sessionId", referencedColumnName = "sessionId", nullable = true)
+    @JoinColumn(name = "sessionId", referencedColumnName = "id", nullable = true)
     private SessionEntity session;
 
     @OneToOne
-    @JoinColumn(name = "profileId", referencedColumnName = "profileId" , nullable = true)
+    @JoinColumn(name = "profileId", referencedColumnName = "id" , nullable = true)
     private UserProfileEntity profile;
 }
