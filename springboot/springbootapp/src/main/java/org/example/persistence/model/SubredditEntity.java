@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table (name = "subreddit_table")
@@ -22,11 +23,15 @@ public class SubredditEntity {
     @Column
     private String desctription;
 
-    @JoinColumn
-    private List<UserAccountEntity> users;
+    @ManyToMany()
+    @JoinTable(
+                name = "subreddit_users_table",
+                joinColumns = @JoinColumn(name = "subredditId"),
+                inverseJoinColumns = @JoinColumn(name = "userId")
+                )
+
+    private Set<UserAccountEntity> users;
 
     @OneToMany(mappedBy = "subreddit")
     private List<PostEntity> posts;
-
-
 }

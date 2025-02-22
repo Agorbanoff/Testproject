@@ -14,7 +14,7 @@ public interface UserActionsController {
     @RequestMapping(value = "/joinsubreddit", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
      ResponseEntity<String> joinSubreddit(@RequestParam String sessionString, @RequestParam String subredditName);
     @RequestMapping(value = "/createpost", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-     ResponseEntity<String> createPost();
+     ResponseEntity<String> createPost(@RequestParam String title, @RequestParam String text, @RequestParam String sessionString, @RequestParam String subredditName);
     @RequestMapping(value = "/createcomment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
      ResponseEntity<String> createComment();
 }

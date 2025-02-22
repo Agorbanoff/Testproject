@@ -15,7 +15,7 @@ public class CleanUpServiceImpl extends Thread implements CleanUpService {
         while (true) {
             sessionRepository.deleteByExpirationDateInMillisLessThan(System.currentTimeMillis());
             try {
-                sleep(90000);
+                sleep(900000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

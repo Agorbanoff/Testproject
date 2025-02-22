@@ -29,4 +29,5 @@ public class SessionEntity {
         this.expirationDateInMillis = expirationDateInMillis;
         this.isExpired = false;
     }
+
 }

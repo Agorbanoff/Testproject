@@ -21,13 +21,17 @@ public class UserActionsControllerImpl implements UserActionsController {
 
     @Override
     public ResponseEntity<String> joinSubreddit(String sessionString, String subredditName) {
-        return null;
+        userActionsService.joinSubreddit(sessionString, subredditName);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("OK");
     }
 
     @Override
-    public ResponseEntity<String> createPost() {
+    public ResponseEntity<String> createPost(String title, String text, String sessionString, String subredditName) {
         return null;
     }
+
 
     @Override
     public ResponseEntity<String> createComment() {
