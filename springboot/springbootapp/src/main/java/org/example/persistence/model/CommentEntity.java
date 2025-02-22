@@ -11,7 +11,7 @@ public class CommentEntity {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)

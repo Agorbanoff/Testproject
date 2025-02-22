@@ -12,7 +12,7 @@ public class PostEntity {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "userAccountId", referencedColumnName = "id")

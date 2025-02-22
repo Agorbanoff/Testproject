@@ -49,11 +49,11 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (!userProfileRepository.existsByUsername(userCredentials.getUsername())) {
                 throw new UserNotFoundException("User not found!");
             }
-        UUID uuid = UUID.randomUUID();
-        String sessionString = uuid.toString();
-        SessionEntity sessionEntity = new SessionEntity(sessionString);
+
+        SessionEntity sessionEntity = setUpSessionEntity();
+        String sessionString = sessionEntity.getSessionString();
         sessionRepository.save(sessionEntity);
-        return sessionString;
+        return sessionEntity.getSessionString();
     }
 
     @Override
@@ -74,7 +74,11 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
 
-
+    private SessionEntity setUpSessionEntity() {
+        UUID uuid = UUID.randomUUID();
+        long expirationDateInMillis = System.currentTimeMillis() + 900000;
+        return new SessionEntity(uuid.toString(), expirationDateInMillis);
+    }
     private boolean isSessionExpired(String sessionString) {
         SessionEntity sessionEntity = sessionRepository.findBySessionString(sessionString);
         return sessionEntity.isExpired();
