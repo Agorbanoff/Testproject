@@ -32,6 +32,6 @@ public class SubredditEntity {
 
     private Set<UserAccountEntity> users;
 
-    @OneToMany(mappedBy = "subreddit")
-    private List<PostEntity> posts;
+//    @OneToMany(mappedBy = "subreddit")
+//    private List<PostEntity> posts;
 }
