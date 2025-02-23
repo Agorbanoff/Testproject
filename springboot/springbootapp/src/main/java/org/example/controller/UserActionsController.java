@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.controller.model.Subreddit;
+import org.example.persistence.model.CommentEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,5 +17,5 @@ public interface UserActionsController {
     @RequestMapping(value = "/createpost", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
      ResponseEntity<String> createPost(@RequestParam String title, @RequestParam String text, @RequestParam String sessionString, @RequestParam String subredditName);
     @RequestMapping(value = "/createcomment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-     ResponseEntity<String> createComment();
+     ResponseEntity<String> createComment(@RequestParam String sessionString, @RequestParam String text, @RequestParam Long upperCommentId, @RequestParam Long postId);
 }

@@ -27,6 +27,12 @@ public class CommentEntity {
 
     @Column
     private String text;
-    //ne sum reshil oshte kak da sa organizirani putishtata na file-ovetе
 
+    public CommentEntity(UserAccountEntity creator, String text, PostEntity post, CommentEntity upperComment){
+        this.creator = creator;
+        this.text = text;
+        this.post = post;
+        this.upperComment = upperComment;
+    }
+    //ne sum reshil oshte kak da sa organizirani putishtata na file-ovetе //typo
 }

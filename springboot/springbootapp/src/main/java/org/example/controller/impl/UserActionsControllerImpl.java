@@ -2,10 +2,12 @@ package org.example.controller.impl;
 
 import org.example.controller.UserActionsController;
 import org.example.controller.model.Subreddit;
+import org.example.persistence.model.CommentEntity;
 import org.example.service.impl.UserActionsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public class UserActionsControllerImpl implements UserActionsController {
     @Autowired
@@ -29,12 +31,17 @@ public class UserActionsControllerImpl implements UserActionsController {
 
     @Override
     public ResponseEntity<String> createPost(String title, String text, String sessionString, String subredditName) {
-        return null;
+        userActionsService.createPost(title, text, sessionString, subredditName);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("CREATED");
     }
 
-
     @Override
-    public ResponseEntity<String> createComment() {
-        return null;
+    public ResponseEntity<String> createComment(String sessionString, String text, Long upperCommentId, Long postId) {
+        userActionsService.createComment(sessionString, text, upperCommentId, postId);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("CREATED");
     }
 }
