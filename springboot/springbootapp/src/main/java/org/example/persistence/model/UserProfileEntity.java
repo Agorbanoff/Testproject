@@ -10,7 +10,7 @@ public class UserProfileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private long profileId;
+    private long id;
 
     @Column
     private String username;

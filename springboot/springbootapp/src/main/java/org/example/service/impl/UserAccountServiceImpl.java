@@ -12,6 +12,7 @@ import org.example.persistence.repository.UserAccountRepository;
 import org.example.persistence.repository.UserProfileRepository;
 import org.example.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
+@Service
 public class UserAccountServiceImpl implements UserAccountService {
 
     private static String PFP_DIR_PATH = "~/TestProject/UserData/Pfp";
@@ -47,11 +49,11 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (!userProfileRepository.existsByUsername(userCredentials.getUsername())) {
                 throw new UserNotFoundException("User not found!");
             }
-        UUID uuid = UUID.randomUUID();
-        String sessionString = uuid.toString();
-        SessionEntity sessionEntity = new SessionEntity(sessionString);
+
+        SessionEntity sessionEntity = setUpSessionEntity();
+        String sessionString = sessionEntity.getSessionString();
         sessionRepository.save(sessionEntity);
-        return sessionString;
+        return sessionEntity.getSessionString();
     }
 
     @Override
@@ -72,7 +74,11 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
 
-
+    private SessionEntity setUpSessionEntity() {
+        UUID uuid = UUID.randomUUID();
+        long expirationDateInMillis = System.currentTimeMillis() + 900000;
+        return new SessionEntity(uuid.toString(), expirationDateInMillis);
+    }
     private boolean isSessionExpired(String sessionString) {
         SessionEntity sessionEntity = sessionRepository.findBySessionString(sessionString);
         return sessionEntity.isExpired();
@@ -80,12 +86,12 @@ public class UserAccountServiceImpl implements UserAccountService {
     private long getUserProfileIdBySessionString(String sessionString) {
         UserAccountEntity userAccountEntity = userAccountRepository.findBySession_SessionString(sessionString);
         UserProfileEntity userProfileEntity = userAccountEntity.getProfile();
-        return userProfileEntity.getProfileId();
+        return userProfileEntity.getId();
     }
     private String saveMultipartFile(MultipartFile file) throws IOException {
         Path fileDir = Path.of(PFP_DIR_PATH);
         Files.createDirectories(fileDir);
-        Path filePath = fileDir.resolve(file.getOriginalFilename());
+        Path filePath = fileDir.resolve(file.getOriginalFilename() + String.valueOf(System.currentTimeMillis()));
         Files.copy(file.getInputStream(), filePath);
         return filePath.toString();
     }

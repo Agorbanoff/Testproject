@@ -15,7 +15,7 @@ public class UserProfile {
 
     public UserProfileEntity toUserProfileEntity(long profileId, String pfpPath) {
         UserProfileEntity userProfileEntity = new UserProfileEntity();
-        userProfileEntity.setProfileId(profileId);
+        userProfileEntity.setId(profileId);
         userProfileEntity.setUsername(username);
         userProfileEntity.setPassword(password);
         userProfileEntity.setPfpPath(pfpPath);

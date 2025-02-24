@@ -12,11 +12,28 @@ public class PostEntity {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long postId;
+    private Long id;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "userAccountId", referencedColumnName = "id")
     private UserAccountEntity creator;
-    
+
+    @Column
+    private String title;
+
+    @Column
+    private String text;
+
+    @Column
+    private String subredditName;
+
+    @OneToMany(mappedBy = "post")
     private List<CommentEntity> comments;
+
+    public PostEntity(String title, String text, UserAccountEntity creator, String subredditName) {
+        this.subredditName = subredditName;
+        this.title = title;
+        this.text = text;
+        this.creator = creator;
+    }
 }
