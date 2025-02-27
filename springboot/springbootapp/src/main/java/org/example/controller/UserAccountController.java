@@ -14,11 +14,11 @@ import java.io.IOException;
 public interface UserAccountController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    ResponseEntity<String> signup(@RequestBody UserCredentials userCredentials) throws UsernameAlreadyExistsException;
+    ResponseEntity<String> signup(@RequestBody UserCredentials userCredentials) throws Exception;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    ResponseEntity<String> login(@RequestBody UserCredentials userCredentials) throws UserNotFoundException;
+    ResponseEntity<String> login(@RequestBody UserCredentials userCredentials) throws Exception;
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     ResponseEntity<String> logout(@RequestParam String sessionString);

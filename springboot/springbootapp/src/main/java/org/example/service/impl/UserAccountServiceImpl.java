@@ -11,11 +11,15 @@ import org.example.persistence.repository.SessionRepository;
 import org.example.persistence.repository.UserAccountRepository;
 import org.example.persistence.repository.UserProfileRepository;
 import org.example.service.UserAccountService;
+import org.example.validators.ExistingUserCredentialsValidator;
+import org.example.validators.UniqueUsernameValidator;
+import org.example.validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
@@ -33,10 +37,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     private SessionRepository sessionRepository;
 
     @Override
-    public void signup(UserCredentials userCredentials) throws UsernameAlreadyExistsException {
-        if(userProfileRepository.existsByUsername(userCredentials.getUsername())) {
-            throw new UsernameAlreadyExistsException("Username already exists!");
-        }
+    public void signup(UserCredentials userCredentials) throws Exception {
+        validate(UniqueUsernameValidator.class, userCredentials);
         UserProfileEntity userProfileEntity = userCredentials.toUserProfileEntity();
         UserAccountEntity userAccountEntity = new UserAccountEntity();
         userAccountEntity.setProfile(userProfileEntity);
@@ -45,11 +47,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public String login(UserCredentials userCredentials) throws UserNotFoundException {
-        if (!userProfileRepository.existsByUsername(userCredentials.getUsername())) {
-                throw new UserNotFoundException("User not found!");
-            }
-
+    public String login(UserCredentials userCredentials) throws Exception {
+        validate(ExistingUserCredentialsValidator.class, userCredentials);
         SessionEntity sessionEntity = setUpSessionEntity();
         String sessionString = sessionEntity.getSessionString();
         sessionRepository.save(sessionEntity);
@@ -94,5 +93,10 @@ public class UserAccountServiceImpl implements UserAccountService {
         Path filePath = fileDir.resolve(file.getOriginalFilename() + String.valueOf(System.currentTimeMillis()));
         Files.copy(file.getInputStream(), filePath);
         return filePath.toString();
+    }
+
+    private void validate(Class<? extends Validator> validatorClass, Object validationData) throws Exception {
+        Validator validator = validatorClass.getDeclaredConstructor().newInstance();
+        validator.validate(validationData);
     }
 }

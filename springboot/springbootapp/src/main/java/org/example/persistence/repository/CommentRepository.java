@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
+public interface CommentRepository extends RedditRepository<CommentEntity, Long> {
     @Query("SELECT comment FROM CommentEntity comment WHERE comment.id = :id")
     CommentEntity findCommentByCommentId(@Param("id") Long id);
 }

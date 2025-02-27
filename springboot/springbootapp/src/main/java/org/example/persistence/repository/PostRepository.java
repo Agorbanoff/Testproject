@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends JpaRepository<PostEntity, Long> {
+public interface PostRepository extends RedditRepository<PostEntity, Long> {
     @Query("SELECT p FROM PostEntity p WHERE p.id = :id")
     PostEntity findPostByPostId(@Param("id") Long id);
 }

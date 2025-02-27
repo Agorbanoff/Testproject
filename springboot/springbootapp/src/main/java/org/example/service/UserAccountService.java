@@ -10,9 +10,9 @@ import java.io.IOException;
 
 public interface UserAccountService {
 
-    void signup(UserCredentials userCredentials) throws UsernameAlreadyExistsException;
+    void signup(UserCredentials userCredentials) throws Exception;
 
-    String login(UserCredentials userCredentials) throws UsernameAlreadyExistsException, UserNotFoundException;
+    String login(UserCredentials userCredentials) throws Exception;
 
     void logout(String sessionString);
 
