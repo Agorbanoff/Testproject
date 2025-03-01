@@ -21,7 +21,7 @@ const RegisterPage = () => {
     }
 
     // Send fetch request for registration
-    fetch("https://example.com/api/register", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
