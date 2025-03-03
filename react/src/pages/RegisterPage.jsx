@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./RegisterPage.css";
 
 const RegisterPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -13,7 +13,8 @@ const RegisterPage = () => {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
-
+    let object = { username: username,
+                   password: password }
     // Check if passwords match
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
@@ -21,12 +22,12 @@ const RegisterPage = () => {
     }
 
     // Send fetch request for registration
-    fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify(object),
     })
       .then((response) => {
         if (response.ok) {
@@ -53,11 +54,11 @@ const RegisterPage = () => {
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
         <div className="input-group">
-          <label>Email:</label>
+          <label>Username:</label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
