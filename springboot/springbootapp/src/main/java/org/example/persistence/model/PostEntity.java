@@ -2,6 +2,7 @@ package org.example.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.controller.model.Subreddit;
 
 import java.util.List;
@@ -9,12 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "posts_table")
 @Data
-public class PostEntity {
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+@NoArgsConstructor
+public class PostEntity extends BaseEntity{
     @OneToOne
     @JoinColumn(name = "userAccountId", referencedColumnName = "id")
     private UserAccountEntity creator;

@@ -3,6 +3,7 @@ package org.example.persistence.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
@@ -11,12 +12,8 @@ import java.util.Set;
 @Table (name = "subreddit_table")
 @Data
 @AllArgsConstructor
-public class SubredditEntity {
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long subredditId;
-
+@NoArgsConstructor
+public class SubredditEntity extends BaseEntity{
     @Column
     private String name;
 

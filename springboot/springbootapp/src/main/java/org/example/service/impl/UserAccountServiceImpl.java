@@ -2,8 +2,7 @@ package org.example.service.impl;
 
 import org.example.controller.model.UserCredentials;
 import org.example.controller.model.UserProfile;
-import org.example.exception.exceptions.UserNotFoundException;
-import org.example.exception.exceptions.UsernameAlreadyExistsException;
+import org.example.exception.exceptions.SessionExpiredException;
 import org.example.persistence.model.SessionEntity;
 import org.example.persistence.model.UserAccountEntity;
 import org.example.persistence.model.UserProfileEntity;
@@ -15,19 +14,27 @@ import org.example.validators.ExistingUserCredentialsValidator;
 import org.example.validators.UniqueUsernameValidator;
 import org.example.validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
     private static String PFP_DIR_PATH = "~/TestProject/UserData/Pfp";
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    private SessionHandlingServiceImpl sessionHandlingService;
 
     @Autowired
     private UserAccountRepository userAccountRepository;
@@ -38,34 +45,41 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public void signup(UserCredentials userCredentials) throws Exception {
-        validate(UniqueUsernameValidator.class, userCredentials);
+        Map<Class<? extends Validator>, Object> validationPairs = new HashMap<>();
+        validationPairs.put(UniqueUsernameValidator.class, userCredentials.getUsername());
+        validate(validationPairs);
         UserProfileEntity userProfileEntity = userCredentials.toUserProfileEntity();
         UserAccountEntity userAccountEntity = new UserAccountEntity();
         userAccountEntity.setProfile(userProfileEntity);
         userAccountRepository.save(userAccountEntity);
-        userProfileRepository.save(userProfileEntity);
     }
 
     @Override
     public String login(UserCredentials userCredentials) throws Exception {
-        validate(ExistingUserCredentialsValidator.class, userCredentials);
-        SessionEntity sessionEntity = setUpSessionEntity();
+        Map<Class<? extends Validator>, Object> validationPairs = new HashMap<>();
+        validationPairs.put(ExistingUserCredentialsValidator.class, userCredentials);
+        validate(validationPairs);
+        UserAccountEntity userAccountEntity = userAccountRepository.findByProfile_Username(userCredentials.getUsername());
+        SessionEntity sessionEntity = setUpSession();
+        userAccountEntity.setSession(sessionEntity);
         String sessionString = sessionEntity.getSessionString();
-        sessionRepository.save(sessionEntity);
+        userAccountRepository.save(userAccountEntity);
         return sessionEntity.getSessionString();
     }
 
     @Override
-    public void logout(String sessionString) {
+    public void logout(String sessionString) throws SessionExpiredException {
+        sessionHandlingService.updateSessionIfNotExpired(sessionString);
         SessionEntity sessionEntity = sessionRepository.findBySessionString(sessionString);
         sessionEntity.setExpired(true);
     }
 
     @Override
-    public void setUserProfile(UserProfile userProfile, String sessionString) throws IOException {
-        if (isSessionExpired(sessionString)) {
-            System.out.println("not ok");
-        }
+    public void setUserProfile(UserProfile userProfile, String sessionString) throws Exception {
+        sessionHandlingService.updateSessionIfNotExpired(sessionString);
+        Map<Class<? extends Validator>, Object> validationPairs = new HashMap<>();
+        validationPairs.put(UniqueUsernameValidator.class, userProfile.getUsername());
+        validate(validationPairs);
         String pfpPath = saveMultipartFile(userProfile.getPfp());
         long userProfileId = getUserProfileIdBySessionString(sessionString);
         UserProfileEntity userProfileEntity = userProfile.toUserProfileEntity(userProfileId, pfpPath);
@@ -73,7 +87,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
 
-    private SessionEntity setUpSessionEntity() {
+    private SessionEntity setUpSession() {
         UUID uuid = UUID.randomUUID();
         long expirationDateInMillis = System.currentTimeMillis() + 900000;
         return new SessionEntity(uuid.toString(), expirationDateInMillis);
@@ -95,8 +109,11 @@ public class UserAccountServiceImpl implements UserAccountService {
         return filePath.toString();
     }
 
-    private void validate(Class<? extends Validator> validatorClass, Object validationData) throws Exception {
-        Validator validator = validatorClass.getDeclaredConstructor().newInstance();
-        validator.validate(validationData);
+    private void validate(Map<Class<? extends Validator>, Object> validationPairs) throws Exception {
+        for (Map.Entry<Class<? extends Validator>, Object> entry : validationPairs.entrySet()) {
+            Validator validator = applicationContext.getBean(entry.getKey());
+            validator.validate(entry.getValue());
+        }
+
     }
 }

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserAccountRepository extends RedditRepository<UserAccountEntity, Long> {
     UserAccountEntity findBySession_SessionString(String sessionString);
+    UserAccountEntity findByProfile_Username(String username);
 }
