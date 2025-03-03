@@ -2,16 +2,14 @@ package org.example.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 @Entity
 @Table(name = "comments_table")
 @Data
-public class CommentEntity {
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@NoArgsConstructor
+public class CommentEntity extends BaseEntity{
 
     @OneToOne
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)

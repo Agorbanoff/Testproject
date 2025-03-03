@@ -10,6 +10,6 @@ public class Subreddit {
     String description;
 
     public SubredditEntity toSubredditEntity(){
-        return new SubredditEntity(null, name, description, null);
+        return new SubredditEntity(name, description, null);
     }
 }

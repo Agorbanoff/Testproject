@@ -2,15 +2,13 @@ package org.example.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user_profile_table")
 @Data
-public class UserProfileEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+@NoArgsConstructor
+public class UserProfileEntity extends BaseEntity{
 
     @Column
     private String username;

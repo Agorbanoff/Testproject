@@ -3,7 +3,9 @@ package org.example.validators;
 import org.example.controller.model.UserCredentials;
 import org.example.exception.exceptions.UserNotFoundException;
 import org.example.persistence.repository.UserProfileRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ExistingUserCredentialsValidator extends Validator<UserProfileRepository, UserCredentials>{
 
     @Override
