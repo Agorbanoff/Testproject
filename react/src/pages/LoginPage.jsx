@@ -10,8 +10,7 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMessage(""); // Reset error message
-
-    fetch("https://example.com/api/login", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

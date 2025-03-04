@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SubredditRepository extends JpaRepository<SubredditEntity, Long> {
+public interface SubredditRepository extends RedditRepository<SubredditEntity, Long> {
     SubredditEntity findByName(String name);
+    boolean existsByName(String name);
 }

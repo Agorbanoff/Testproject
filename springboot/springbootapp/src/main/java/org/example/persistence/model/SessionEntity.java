@@ -3,16 +3,13 @@ package org.example.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user_session_table")
 @Data
-public class SessionEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private Long id;
+@NoArgsConstructor
+public class SessionEntity extends BaseEntity{
 
     @Column(unique = true, nullable = false)
     private String sessionString;

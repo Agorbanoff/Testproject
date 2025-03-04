@@ -1,47 +1,57 @@
 package org.example.controller.impl;
 
 import org.example.controller.UserActionsController;
+import org.example.controller.model.Post;
 import org.example.controller.model.Subreddit;
+import org.example.exception.exceptions.SessionExpiredException;
+import org.example.exception.exceptions.SubredditAlreadyExistsException;
+import org.example.exception.exceptions.SubredditNotFoundException;
 import org.example.persistence.model.CommentEntity;
 import org.example.service.impl.UserActionsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@Controller
+@RequestMapping("/reddit")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserActionsControllerImpl implements UserActionsController {
     @Autowired
     private UserActionsServiceImpl userActionsService;
 
     @Override
-    public ResponseEntity<String> createSubreddit(Subreddit subreddit) {
-        userActionsService.createSubreddit(subreddit);
+    public ResponseEntity<String> createSubreddit(String sessionString, Subreddit subreddit) throws Exception {
+        userActionsService.createSubreddit(sessionString ,subreddit);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("OK");
+                .body("Created subreddit!");
     }
 
     @Override
-    public ResponseEntity<String> joinSubreddit(String sessionString, String subredditName) {
-        userActionsService.joinSubreddit(sessionString, subredditName);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("OK");
-    }
-
-    @Override
-    public ResponseEntity<String> createPost(String title, String text, String sessionString, String subredditName) {
-        userActionsService.createPost(title, text, sessionString, subredditName);
+    public ResponseEntity<String> joinSubreddit(String sessionString, Long subredditId) throws Exception {
+        userActionsService.joinSubreddit(sessionString, subredditId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body("CREATED");
+                .body("Joined subreddit!");
     }
 
     @Override
-    public ResponseEntity<String> createComment(String sessionString, String text, Long upperCommentId, Long postId) {
+    public ResponseEntity<String> createPost(Post post, String sessionString, Long subredditId) throws Exception {
+        userActionsService.createPost(post, sessionString, subredditId);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Post created!");
+    }
+
+    @Override
+    public ResponseEntity<String> createComment(String sessionString, String text, Long upperCommentId, Long postId) throws SessionExpiredException {
         userActionsService.createComment(sessionString, text, upperCommentId, postId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body("CREATED");
+                .body("Comment created!");
     }
 }

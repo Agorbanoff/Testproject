@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.controller.model.UserCredentials;
 import org.example.controller.model.UserProfile;
+import org.example.exception.exceptions.SessionExpiredException;
 import org.example.exception.exceptions.UserNotFoundException;
 import org.example.exception.exceptions.UsernameAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -14,16 +15,16 @@ import java.io.IOException;
 public interface UserAccountController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    ResponseEntity<String> signup(@RequestBody UserCredentials userCredentials) throws UsernameAlreadyExistsException;
+    ResponseEntity<String> signup(@RequestBody UserCredentials userCredentials) throws Exception;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    ResponseEntity<String> login(@RequestBody UserCredentials userCredentials) throws UserNotFoundException;
+    ResponseEntity<String> login(@RequestBody UserCredentials userCredentials) throws Exception;
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    ResponseEntity<String> logout(@RequestParam String sessionString);
+    ResponseEntity<String> logout(@CookieValue(value = "SESSION_STRING") String sessionString) throws SessionExpiredException;
 
     @RequestMapping(value = "/profile", method = RequestMethod.PUT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<String> setProfile(@ModelAttribute UserProfile userProfile, @RequestParam String sessionString) throws IOException;
+    ResponseEntity<String> setProfile(@ModelAttribute UserProfile userProfile, @CookieValue(value = "SESSION_STRING") String sessionString) throws Exception;
 
 }

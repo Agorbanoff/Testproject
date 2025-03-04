@@ -1,8 +1,6 @@
 package org.example.exception;
 
-import org.example.exception.exceptions.SessionExpiredException;
-import org.example.exception.exceptions.UsernameAlreadyExistsException;
-import org.example.exception.exceptions.UserNotFoundException;
+import org.example.exception.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,9 +23,23 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(SessionExpiredException.class)
-    public ResponseEntity<String> handleSessionExpired() {
+    public ResponseEntity<String> handleSessionExpiredException() {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body("Session expired!");
+    }
+
+    @ExceptionHandler(SubredditAlreadyExistsException.class)
+    public ResponseEntity<String> handleSubredditAlreadyExistsException() {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body("Subreddit already exists!");
+    }
+
+    @ExceptionHandler(SubredditNotFoundException.class)
+    public ResponseEntity<String> handleSubredditNotFoundException() {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("Subreddit not found!");
     }
 }
