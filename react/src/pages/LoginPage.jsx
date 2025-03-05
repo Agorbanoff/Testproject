@@ -3,26 +3,29 @@ import { Link } from "react-router-dom";
 import "./LoginPage.css";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  // Changed state from email to username
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Reset error message
-    fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
+    setErrorMessage("");
+    fetch(`${import.meta.env.VITE_API_URL}/reddit/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      // Changed payload from { email, password } to { username, password }
+      body: JSON.stringify({ username, password }),
     })
       .then((response) => {
+        // Changed from response.json() to response.text() to handle plain text responses
         if (response.ok) {
-          return response.json();
+          return response.text();
         } else {
-          return response.json().then((error) => {
-            throw new Error(error.message || "Failed to login");
+          return response.text().then((errorText) => {
+            throw new Error(errorText || "Failed to login");
           });
         }
       })
@@ -41,11 +44,11 @@ const LoginPage = () => {
         <h2>Login</h2>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <div className="input-group">
-          <label>Email:</label>
+          <label>Username:</label> {/* Changed label from Email to Username */}
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
