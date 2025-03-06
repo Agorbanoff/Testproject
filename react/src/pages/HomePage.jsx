@@ -30,7 +30,7 @@ const PostList = ({ subreddit }) => {
       {sortedPosts.map(post => (
         <div key={post.id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
           <h2>
-            <Link to={`/post/${post.id}/${encodeURIComponent(post.name)}`}>
+            <Link to={`/post/${post.id}`}>
               {post.name}
             </Link>
           </h2>

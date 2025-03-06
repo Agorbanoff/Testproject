@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Login from "./pages/LoginPage.jsx";
 import Register from "./pages/RegisterPage.jsx";
 import { HomePage, SubredditPage } from './pages/HomePage.jsx';
+import PostPage from './pages/PostPage.jsx';
 
 //import Post from "./pages/Post.jsx";
 import './App.css'; // Import the CSS file
@@ -20,7 +21,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/r/:subredditName" element={<SubredditPage/>} />
-
+          <Route path="/post/:postId" element={<PostPage/>} />
           {/* <Route path="/posts/:postname" element={<Post />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
