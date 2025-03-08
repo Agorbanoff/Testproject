@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface SubredditRepository extends RedditRepository<SubredditEntity, Long> {
     SubredditEntity findByName(String name);
     boolean existsByName(String name);
+    boolean existsByUsers_Session_SessionStringAndId(String sessionString, Long subredditId);
 }

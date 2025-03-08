@@ -42,4 +42,18 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body("Subreddit not found!");
     }
+
+    @ExceptionHandler(NullIdInCreateRequestException.class)
+    public ResponseEntity<String> handleIdFoundInCreateRequestException() {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Id must be null for create requests!");
+    }
+
+    @ExceptionHandler(UserNotInSubredditException.class)
+    public ResponseEntity<String> handleUserNotInSubredditException() {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body("User hasn't joined this subreddit yet!");
+    }
 }
