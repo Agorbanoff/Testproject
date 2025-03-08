@@ -10,8 +10,8 @@
         <module name="TestSpringbootHackTuesProject" />
       </profile>
       <profile name="Annotation profile for springbootapp" enabled="true">
-        <sourceOutputDir name="../../../../../../../tmp/test/generated-sources/annotations" />
-        <sourceTestOutputDir name="../../../../../../../tmp/test/generated-test-sources/test-annotations" />
+        <sourceOutputDir name="folder/generated-sources/annotations" />
+        <sourceTestOutputDir name="folder/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="springbootapp" />
       </profile>
