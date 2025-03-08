@@ -2,6 +2,7 @@ package org.example.service.impl;
 
 import org.example.controller.model.Post;
 import org.example.controller.model.Subreddit;
+import org.example.controller.model.ValidationData;
 import org.example.exception.exceptions.SessionExpiredException;
 import org.example.exception.exceptions.SubredditAlreadyExistsException;
 import org.example.exception.exceptions.SubredditNotFoundException;
@@ -14,6 +15,10 @@ import org.example.persistence.repository.PostRepository;
 import org.example.persistence.repository.SubredditRepository;
 import org.example.persistence.repository.UserAccountRepository;
 import org.example.service.UserActionsService;
+import org.example.service.ValidationService;
+import org.example.validations.CreatePostValidation;
+import org.example.validations.CreateSubredditValidation;
+import org.example.validations.JoinSubredditValidation;
 import org.example.validators.ExistingSubredditValidator;
 import org.example.validators.ExistingUserCredentialsValidator;
 import org.example.validators.UniqueSubredditValidator;
@@ -31,6 +36,9 @@ public class UserActionsServiceImpl implements UserActionsService {
     private ApplicationContext applicationContext;
 
     @Autowired
+    private ValidationServiceImpl validationService;
+
+    @Autowired
     private SessionHandlingServiceImpl sessionHandlingService;
 
     @Autowired
@@ -46,31 +54,34 @@ public class UserActionsServiceImpl implements UserActionsService {
     private CommentRepository commentRepository;
 
     @Override
-    public void createSubreddit(String sessionString ,Subreddit subreddit) throws Exception {
+    public void createSubreddit(String sessionString, Subreddit subreddit) throws Exception {
         sessionHandlingService.updateSessionIfNotExpired(sessionString);
-        Map<Class<? extends Validator>, Object> validationPairs = new HashMap<>();
-        validationPairs.put(UniqueSubredditValidator.class, subreddit.getName());
-        validate(validationPairs);
+        validationService.validate(CreateSubredditValidation.class, ValidationData.builder().subreddit(subreddit).build());
         subredditRepository.save(subreddit.toSubredditEntity());
     }
 
     @Override
     public void joinSubreddit(String sessionString, Long subredditId) throws Exception {
+        Subreddit subreddit = new Subreddit();
+        subreddit.setId(subredditId);
         sessionHandlingService.updateSessionIfNotExpired(sessionString);
-        Map<Class<? extends Validator>, Object> validationPairs = new HashMap<>();
-        validationPairs.put(ExistingSubredditValidator.class, subredditId);
-        validate(validationPairs);
-        SubredditEntity subredditEntity = subredditRepository.findById(subredditId).orElse(null);
+        validationService.validate(JoinSubredditValidation.class, ValidationData.builder().subreddit(subreddit).build());
+        SubredditEntity subredditEntity = subredditRepository.findById(subreddit.getId()).orElse(null);
         subredditEntity.getUsers().add(userAccountRepository.findBySession_SessionString(sessionString));
         subredditRepository.save(subredditEntity);
     }
 
     @Override
     public void createPost(Post post, String sessionString, Long subredditId) throws Exception {
+        Subreddit subreddit = new Subreddit();
+        subreddit.setId(subredditId);
+        ValidationData validationData = ValidationData.builder()
+                        .subreddit(subreddit)
+                        .post(post)
+                        .sessionString(sessionString)
+                        .build();
         sessionHandlingService.updateSessionIfNotExpired(sessionString);
-        Map<Class<? extends Validator>, Object> validationPairs = new HashMap<>();
-        validationPairs.put(ExistingSubredditValidator.class, subredditId);
-        validate(validationPairs);
+        validationService.validate(CreatePostValidation.class, validationData);
         UserAccountEntity userAccountEntity = userAccountRepository.findBySession_SessionString(sessionString);
         SubredditEntity subredditEntity = subredditRepository.findById(subredditId).orElse(null);
         PostEntity postEntity = new PostEntity(post.getTitle(), post.getText(), userAccountEntity, subredditEntity);
@@ -91,11 +102,5 @@ public class UserActionsServiceImpl implements UserActionsService {
         commentRepository.save(commentEntity);
     }
 
-    private void validate(Map<Class<? extends Validator>, Object> validationPairs) throws Exception {
-        for (Map.Entry<Class<? extends Validator>, Object> entry : validationPairs.entrySet()) {
-            Validator validator = applicationContext.getBean(entry.getKey());
-            validator.validate(entry.getValue());
-        }
 
-    }
 }

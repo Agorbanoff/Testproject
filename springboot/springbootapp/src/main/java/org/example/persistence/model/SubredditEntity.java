@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,6 +27,7 @@ public class SubredditEntity extends BaseEntity{
                 )
 
     private Set<UserAccountEntity> users;
+
 
 //    @OneToMany(mappedBy = "subreddit")
 //    private List<PostEntity> posts;
