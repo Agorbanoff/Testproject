@@ -26,5 +26,4 @@ public interface UserAccountController {
 
     @RequestMapping(value = "/profile", method = RequestMethod.PUT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<String> setProfile(@ModelAttribute UserProfile userProfile, @CookieValue(value = "SESSION_STRING") String sessionString) throws Exception;
-
 }
