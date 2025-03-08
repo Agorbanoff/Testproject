@@ -19,7 +19,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/homepage" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/r/:subredditName" element={<SubredditPage/>} />
           <Route path="/post/:postId" element={<PostPage/>} />
           {/* <Route path="/posts/:postname" element={<Post />} /> */}

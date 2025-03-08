@@ -32,7 +32,7 @@ const LoginPage = () => {
         }
       })
       .then((data) => {
-       navigate('/homepage');
+       navigate('/');
         console.log(data);
       })
       .catch((err) => {
