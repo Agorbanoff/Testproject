@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import "./LoginPage.css";
 
 const LoginPage = () => {
@@ -7,6 +8,7 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ const LoginPage = () => {
         }
       })
       .then((data) => {
-        alert("Login successful!"); // Replace with your logic (e.g., redirect)
+       navigate('/');
         console.log(data);
       })
       .catch((err) => {

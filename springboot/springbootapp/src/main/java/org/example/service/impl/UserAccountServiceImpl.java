@@ -2,6 +2,7 @@ package org.example.service.impl;
 
 import org.example.controller.model.UserCredentials;
 import org.example.controller.model.UserProfile;
+import org.example.controller.model.ValidationData;
 import org.example.exception.exceptions.SessionExpiredException;
 import org.example.persistence.model.SessionEntity;
 import org.example.persistence.model.UserAccountEntity;
@@ -10,6 +11,10 @@ import org.example.persistence.repository.SessionRepository;
 import org.example.persistence.repository.UserAccountRepository;
 import org.example.persistence.repository.UserProfileRepository;
 import org.example.service.UserAccountService;
+import org.example.service.ValidationService;
+import org.example.validations.LoginValidation;
+import org.example.validations.SignUpValidation;
+import org.example.validations.Validation;
 import org.example.validators.ExistingUserCredentialsValidator;
 import org.example.validators.UniqueUsernameValidator;
 import org.example.validators.Validator;
@@ -34,6 +39,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     private ApplicationContext applicationContext;
 
     @Autowired
+    private ValidationServiceImpl validationService;
+    @Autowired
     private SessionHandlingServiceImpl sessionHandlingService;
 
     @Autowired
@@ -45,9 +52,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public void signup(UserCredentials userCredentials) throws Exception {
-        Map<Class<? extends Validator>, Object> validationPairs = new HashMap<>();
-        validationPairs.put(UniqueUsernameValidator.class, userCredentials.getUsername());
-        validate(validationPairs);
+        validationService.validate(SignUpValidation.class, ValidationData.builder().userCredentials(userCredentials).build());
         UserProfileEntity userProfileEntity = userCredentials.toUserProfileEntity();
         UserAccountEntity userAccountEntity = new UserAccountEntity();
         userAccountEntity.setProfile(userProfileEntity);
@@ -56,9 +61,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public String login(UserCredentials userCredentials) throws Exception {
-        Map<Class<? extends Validator>, Object> validationPairs = new HashMap<>();
-        validationPairs.put(ExistingUserCredentialsValidator.class, userCredentials);
-        validate(validationPairs);
+        validationService.validate(LoginValidation.class, ValidationData.builder().userCredentials(userCredentials).build());
         UserAccountEntity userAccountEntity = userAccountRepository.findByProfile_Username(userCredentials.getUsername());
         SessionEntity sessionEntity = setUpSession();
         userAccountEntity.setSession(sessionEntity);
@@ -77,9 +80,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public void setUserProfile(UserProfile userProfile, String sessionString) throws Exception {
         sessionHandlingService.updateSessionIfNotExpired(sessionString);
-        Map<Class<? extends Validator>, Object> validationPairs = new HashMap<>();
-        validationPairs.put(UniqueUsernameValidator.class, userProfile.getUsername());
-        validate(validationPairs);
+        validationService.validate(LoginValidation.class, ValidationData.builder().userProfile(userProfile).build());
         String pfpPath = saveMultipartFile(userProfile.getPfp());
         long userProfileId = getUserProfileIdBySessionString(sessionString);
         UserProfileEntity userProfileEntity = userProfile.toUserProfileEntity(userProfileId, pfpPath);
@@ -109,12 +110,6 @@ public class UserAccountServiceImpl implements UserAccountService {
         return filePath.toString();
     }
 
-    private void validate(Map<Class<? extends Validator>, Object> validationPairs) throws Exception {
-        for (Map.Entry<Class<? extends Validator>, Object> entry : validationPairs.entrySet()) {
-            Validator validator = applicationContext.getBean(entry.getKey());
-            validator.validate(entry.getValue());
-        }
 
-    }
 }
 

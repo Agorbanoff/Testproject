@@ -7,6 +7,7 @@ import org.example.service.SessionHandlingService;
 import org.example.validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
