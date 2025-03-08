@@ -13,8 +13,7 @@ const RegisterPage = () => {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
-    let object = { username: username,
-                   password: password }
+
     // Check if passwords match
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
@@ -22,19 +21,20 @@ const RegisterPage = () => {
     }
 
     // Send fetch request for registration
-    fetch(`${import.meta.env.VITE_API_URL}/api/signup`, {
+    fetch(`${import.meta.env.VITE_API_URL}/reddit/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(object),
+      body: JSON.stringify({ username, password }),
     })
       .then((response) => {
+        console.log(response);
         if (response.ok) {
-          return response.json();
+          return response.text();
         } else {
-          return response.json().then((error) => {
-            throw new Error(error.message || "Failed to register");
+          return response.text().then((errorText) => {
+            throw new Error(errorText || "Failed to register");
           });
         }
       })
