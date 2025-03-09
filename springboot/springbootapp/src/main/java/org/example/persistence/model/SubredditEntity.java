@@ -18,7 +18,7 @@ public class SubredditEntity extends BaseEntity{
     private String name;
 
     @Column
-    private String desctription;
+    private String description;
 
     @ManyToMany()
     @JoinTable(

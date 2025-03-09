@@ -13,6 +13,6 @@ public interface SubredditRepository extends RedditRepository<SubredditEntity, L
     SubredditEntity findByName(String name);
     boolean existsByName(String name);
     boolean existsByUsers_Session_SessionStringAndId(String sessionString, Long subredditId);
-//    @Query(value = "SELECT s FROM subreddit_table s ORDER BY s.id DESC")
-//    List<CreateSubredditRequestDTO> findTopSubreddits(Pageable pageable);
+    @Query("SELECT new org.example.controller.model.CreateSubredditRequestDTO(s.name, s.description) FROM SubredditEntity s ORDER BY s.id DESC")
+    List<CreateSubredditRequestDTO> findTopSubreddits(Pageable pageable);
 }
