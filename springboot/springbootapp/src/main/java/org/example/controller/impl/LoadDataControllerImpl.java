@@ -23,7 +23,7 @@ public class LoadDataControllerImpl implements LoadDataController {
         List<CreateSubredditRequestDTO> createSubredditRequestDTO = loadDataServiceimpl.loadSubreddits(count);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(createSubredditRequestDTO);
     }
 }
