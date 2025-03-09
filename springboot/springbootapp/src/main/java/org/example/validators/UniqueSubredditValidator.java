@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class UniqueSubredditValidator extends Validator<SubredditRepository> {
     @Override
     public void validate(ValidationData validationData) throws SubredditAlreadyExistsException {
-        String subredditName = validationData.getSubreddit().getName();
+        String subredditName = validationData.getCreateSubredditRequestDTO().getName();
         if (repository.existsByName(subredditName)) {
             throw new SubredditAlreadyExistsException("Subreddit already exists!");
         }

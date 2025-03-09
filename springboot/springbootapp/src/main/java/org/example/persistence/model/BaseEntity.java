@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class BaseEntity {
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 }

@@ -10,6 +10,7 @@ import org.example.persistence.model.UserProfileEntity;
 import org.example.persistence.repository.SessionRepository;
 import org.example.persistence.repository.UserAccountRepository;
 import org.example.persistence.repository.UserProfileRepository;
+import org.example.service.FileService;
 import org.example.service.UserAccountService;
 import org.example.service.ValidationService;
 import org.example.validations.LoginValidation;
@@ -33,7 +34,6 @@ import java.util.UUID;
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private static String PFP_DIR_PATH = "~/TestProject/UserData/Pfp";
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -42,6 +42,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     private ValidationServiceImpl validationService;
     @Autowired
     private SessionHandlingServiceImpl sessionHandlingService;
+    @Autowired
+    private FileServiceImpl fileService;
 
     @Autowired
     private UserAccountRepository userAccountRepository;
@@ -53,7 +55,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public void signup(UserCredentials userCredentials) throws Exception {
         validationService.validate(SignUpValidation.class, ValidationData.builder().userCredentials(userCredentials).build());
-        UserProfileEntity userProfileEntity = userCredentials.toUserProfileEntity();
+        UserProfileEntity userProfileEntity = (UserProfileEntity) userCredentials.toEntity();
         UserAccountEntity userAccountEntity = new UserAccountEntity();
         userAccountEntity.setProfile(userProfileEntity);
         userAccountRepository.save(userAccountEntity);
@@ -80,10 +82,12 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public void setUserProfile(UserProfile userProfile, String sessionString) throws Exception {
         sessionHandlingService.updateSessionIfNotExpired(sessionString);
-        validationService.validate(LoginValidation.class, ValidationData.builder().userProfile(userProfile).build());
-        String pfpPath = saveMultipartFile(userProfile.getPfp());
+//        validationService.validate(LoginValidation.class, ValidationData.builder().userProfile(userProfile).build());
+        String pfpPath = fileService.savePfp(userProfile.getPfp(), sessionString);
         long userProfileId = getUserProfileIdBySessionString(sessionString);
-        UserProfileEntity userProfileEntity = userProfile.toUserProfileEntity(userProfileId, pfpPath);
+        UserProfileEntity userProfileEntity = (UserProfileEntity) userProfile.toEntity();
+        userProfileEntity.setId(userProfileId);
+        userProfileEntity.setPfpPath("pfp");
         userProfileRepository.save(userProfileEntity);
     }
 
@@ -102,13 +106,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         UserProfileEntity userProfileEntity = userAccountEntity.getProfile();
         return userProfileEntity.getId();
     }
-    private String saveMultipartFile(MultipartFile file) throws IOException {
-        Path fileDir = Path.of(PFP_DIR_PATH);
-        Files.createDirectories(fileDir);
-        Path filePath = fileDir.resolve(file.getOriginalFilename() + String.valueOf(System.currentTimeMillis()));
-        Files.copy(file.getInputStream(), filePath);
-        return filePath.toString();
-    }
+
 
 
 }

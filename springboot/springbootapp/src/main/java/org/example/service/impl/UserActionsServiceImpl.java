@@ -1,11 +1,10 @@
 package org.example.service.impl;
 
-import org.example.controller.model.Post;
-import org.example.controller.model.Subreddit;
+import org.example.controller.model.CreatePostRequestDTO;
+import org.example.controller.model.CreateSubredditRequestDTO;
+import org.example.controller.model.JoinSubredditRequestDTO;
 import org.example.controller.model.ValidationData;
 import org.example.exception.exceptions.SessionExpiredException;
-import org.example.exception.exceptions.SubredditAlreadyExistsException;
-import org.example.exception.exceptions.SubredditNotFoundException;
 import org.example.persistence.model.CommentEntity;
 import org.example.persistence.model.PostEntity;
 import org.example.persistence.model.SubredditEntity;
@@ -15,20 +14,12 @@ import org.example.persistence.repository.PostRepository;
 import org.example.persistence.repository.SubredditRepository;
 import org.example.persistence.repository.UserAccountRepository;
 import org.example.service.UserActionsService;
-import org.example.service.ValidationService;
 import org.example.validations.CreatePostValidation;
 import org.example.validations.CreateSubredditValidation;
 import org.example.validations.JoinSubredditValidation;
-import org.example.validators.ExistingSubredditValidator;
-import org.example.validators.ExistingUserCredentialsValidator;
-import org.example.validators.UniqueSubredditValidator;
-import org.example.validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class UserActionsServiceImpl implements UserActionsService {
@@ -54,38 +45,37 @@ public class UserActionsServiceImpl implements UserActionsService {
     private CommentRepository commentRepository;
 
     @Override
-    public void createSubreddit(String sessionString, Subreddit subreddit) throws Exception {
+    public void createSubreddit(String sessionString, CreateSubredditRequestDTO subreddit) throws Exception {
         sessionHandlingService.updateSessionIfNotExpired(sessionString);
-        validationService.validate(CreateSubredditValidation.class, ValidationData.builder().subreddit(subreddit).build());
-        subredditRepository.save(subreddit.toSubredditEntity());
+        validationService.validate(CreateSubredditValidation.class, ValidationData.builder().createSubredditRequestDTO(subreddit).build());
+        subredditRepository.save((SubredditEntity) subreddit.toEntity());
     }
 
     @Override
-    public void joinSubreddit(String sessionString, Long subredditId) throws Exception {
-        Subreddit subreddit = new Subreddit();
-        subreddit.setId(subredditId);
+    public void joinSubreddit(String sessionString, JoinSubredditRequestDTO subreddit) throws Exception {
         sessionHandlingService.updateSessionIfNotExpired(sessionString);
-        validationService.validate(JoinSubredditValidation.class, ValidationData.builder().subreddit(subreddit).build());
+        validationService.validate(JoinSubredditValidation.class, ValidationData.builder().joinSubredditRequestDTO(subreddit).build());
         SubredditEntity subredditEntity = subredditRepository.findById(subreddit.getId()).orElse(null);
         subredditEntity.getUsers().add(userAccountRepository.findBySession_SessionString(sessionString));
         subredditRepository.save(subredditEntity);
     }
 
     @Override
-    public void createPost(Post post, String sessionString, Long subredditId) throws Exception {
-        Subreddit subreddit = new Subreddit();
-        subreddit.setId(subredditId);
+    public void createPost(CreatePostRequestDTO createPostRequestDTO, String sessionString, JoinSubredditRequestDTO subreddit) throws Exception {
+        JoinSubredditRequestDTO joinSubredditRequestDTO = new JoinSubredditRequestDTO();
+        joinSubredditRequestDTO.setId(subreddit.getId());
         ValidationData validationData = ValidationData.builder()
-                        .subreddit(subreddit)
-                        .post(post)
+                        .joinSubredditRequestDTO(joinSubredditRequestDTO)
+                        .createPostRequestDTO(createPostRequestDTO)
                         .sessionString(sessionString)
                         .build();
         sessionHandlingService.updateSessionIfNotExpired(sessionString);
         validationService.validate(CreatePostValidation.class, validationData);
         UserAccountEntity userAccountEntity = userAccountRepository.findBySession_SessionString(sessionString);
-        SubredditEntity subredditEntity = subredditRepository.findById(subredditId).orElse(null);
-        PostEntity postEntity = new PostEntity(post.getTitle(), post.getText(), userAccountEntity, subredditEntity);
-        postRepository.save(postEntity);
+        SubredditEntity subredditEntity = subredditRepository.findById(subreddit.getId()).orElse(null);
+        PostEntity postEntity = new PostEntity(createPostRequestDTO.getTitle(), createPostRequestDTO.getText(), userAccountEntity, subredditEntity);
+        subredditEntity.getPosts().add(postEntity);
+        subredditRepository.save(subredditEntity);
     }
 
     @Override

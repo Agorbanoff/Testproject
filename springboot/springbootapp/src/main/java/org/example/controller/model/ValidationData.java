@@ -9,6 +9,7 @@ public class ValidationData {
     private UserCredentials userCredentials;
     private UserProfile userProfile;
     private String sessionString;
-    private Subreddit subreddit;
-    private Post post;
+    private CreateSubredditRequestDTO createSubredditRequestDTO;
+    private JoinSubredditRequestDTO joinSubredditRequestDTO;
+    private CreatePostRequestDTO createPostRequestDTO;
 }

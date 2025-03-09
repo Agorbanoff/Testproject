@@ -3,7 +3,6 @@ package org.example.persistence.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.controller.model.Subreddit;
 
 import java.util.List;
 
@@ -12,11 +11,11 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class PostEntity extends BaseEntity{
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userAccountId", referencedColumnName = "id")
     private UserAccountEntity creator;
 
-    @Column
+    @Column()
     private String title;
 
     @Column
