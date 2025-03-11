@@ -1,42 +1,36 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from "./pages/LoginPage.jsx";
 import Register from "./pages/RegisterPage.jsx";
 import { HomePage, SubredditPage } from './pages/HomePage.jsx';
 import PostPage from './pages/PostPage.jsx';
-
-//import Post from "./pages/Post.jsx";
-import './App.css'; // Import the CSS file
+import NotFound from './pages/NotFound.jsx'; // Make sure you have this page
+import DiscoverCommunities from './pages/DiscoverCommunities.jsx';
+import MainLayout from './components/MainLayout.jsx';
+import CreateCommunity from './pages/CreateCommunity.jsx';
+import './App.css';
 
 const App = () => {
   return (
     <Router>
-      <nav className="nav">
-        <Link className="link" to="/login">login</Link>
-      </nav>
+      <Routes>
+        {/* Routes that should NOT show the aside */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-      <div className="content">
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+        {/* Wrap pages that should show the aside with MainLayout */}
+        <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/r/:subredditName" element={<SubredditPage/>} />
-          <Route path="/post/:postId" element={<PostPage/>} />
-          {/* <Route path="/posts/:postname" element={<Post />} /> */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-};
+          <Route path="/r/:subredditName" element={<SubredditPage />} />
+          <Route path="/post/:postId" element={<PostPage />} />
+          <Route path="/discover-communities" element={<DiscoverCommunities />} />
+          <Route path="/create-community" element={<CreateCommunity />} />
+        </Route>
 
-// Optional: 404 Not Found Component
-const NotFound = () => {
-  return (
-    <div className="not-found">
-      <h2>404 - Page Not Found</h2>
-      <p>Sorry, the page you&#39;re looking for doesn&#39;t exist.</p>
-    </div>
+        {/* NotFound page remains outside the MainLayout */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 };
 

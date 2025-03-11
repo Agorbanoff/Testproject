@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import "./LoginPage.css";
-
 const LoginPage = () => {
   // Changed state from email to username
   const [username, setUsername] = useState("");

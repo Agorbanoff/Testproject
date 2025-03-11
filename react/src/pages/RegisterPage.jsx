@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./RegisterPage.css";
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -8,6 +9,7 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,6 +42,7 @@ const RegisterPage = () => {
       })
       .then((data) => {
         setSuccessMessage("Registration successful! You can now log in.");
+        navigate('/login');
         console.log(data);
       })
       .catch((err) => {
