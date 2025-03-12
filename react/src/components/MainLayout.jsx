@@ -30,11 +30,12 @@ const MainLayout = () => {
       <nav className="nav">
         <Link className="link" to="/login">login</Link>
       </nav>
-      <div className="content">
-        {/* This is where the matched child routes will be rendered */}
-        <Outlet />
+      <div className="layout">
+        <CommunitiesAside />
+        <main className="content">
+          <Outlet />
+        </main>
       </div>
-      <CommunitiesAside />
     </>
   );
 };
