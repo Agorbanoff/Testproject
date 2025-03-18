@@ -8,40 +8,36 @@ const CreateCommunity = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!communityName.trim()) {
       setError('Community name is required');
       return;
     }
-
     setLoading(true);
-    setError('');
 
-    try {
-      const response = await fetch('/api/communities', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ communityName, description })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error creating community');
-      }
-
-      const data = await response.json();
-      navigate(`/r/${data.communityName.toLowerCase()}`);
-    } catch (err) {
-      setError(err.message);
-    } finally {
+    fetch(`${import.meta.env.VITE_API_URL}/reddit/create-community`, {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({communityName, description}),
+    })
+    .then((response) => {
+        if(response.ok) return response.json()
+        else throw new Error("Couldn't fetch, error")
+    })
+    .then(() =>{
+      navigate("/")
+    })
+    .catch((error) => {
+      setError(error.message);
+    })
+    .finally(() => {
       setLoading(false);
-    }
-  };
-
+    });
+  }
   // Define a style object for input and textarea
   const inputStyle = {
     backgroundColor: 'black',
@@ -50,7 +46,7 @@ const CreateCommunity = () => {
     padding: '8px',
     borderRadius: '4px'
   };
-
+  
   return (
     <div className="create-community">
       <h2>Create Community</h2>
