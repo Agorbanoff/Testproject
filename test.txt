@@ -1,3 +1,8 @@
-asdasd
-dasaskjdda
-j
+commands:
+react:
+  cd /var/www/Testproject/react
+  sudo npm install --legacy-peer-deps
+  npm run build
+bootstrap:
+  cd /var/www/Testproject/springboot/springbootapp
+  mvn clean package -DskipTests
